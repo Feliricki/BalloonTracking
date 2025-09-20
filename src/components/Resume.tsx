@@ -1,11 +1,13 @@
 import React from 'react';
 
 const Resume: React.FC = () => {
+    const resumePath = import.meta.env.DEV ? '/public/assets/resume.pdf' : '/assets/resume.pdf';
+
     return (
         <div>
             <h1>My Resume</h1>
             <iframe 
-                src="/assets/resume.pdf"
+                src={resumePath}
                 width="100%"
                 height="100%"
                 style={{ border: 'none', height: '100vh'}}
