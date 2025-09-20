@@ -1,69 +1,16 @@
-# React + TypeScript + Vite
+# [Balllon Tracking]()
+Small application I made in three days, that visualizes weather balloons from https://windbornesystems.com, in addition to ongoing weather events such as cyclones, and volcanoes. Clicking on weather 
+ballon allows the user to observe the forecast at that location, to better understand how the weather balloons are affected by the climate. All of the data, comes from a continously updated data source 
+from the last 24 hours. Mapbox and [deck.gl](deck.gl) are the main libraries/APIs powering the visuals. 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Features
+- Toggle visibililty of ballons and weather events
+- Get balloons data, at hourly interval which can be changed in real-time with a slider
+- Click on a balloon to get the forecast at that exact location at the exact time specified by the aforementioned "hours_ago" slider
+- Click on a balloon to get the nearest weather event (cylcones, and volcanoes)
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+# Credits
+- Credit to the [Open Meteo API](https://open-meteo.com) for providing a free, quality forecast API
+- Credit to [Mapbox](https://www.mapbox.com/) for a high-quality basemap
+- Credit to [deck.gl](deck.gl) for a great visualization library
+- Credit to [Wind Born Systems](https://windbornesystems.com) for a extensive, and interesting weather balloon API
