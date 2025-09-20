@@ -1,5 +1,5 @@
 # [Balllon Tracking](https://balloon-tracking.vercel.app/)
-A small application I made in three days, that visualizes weather balloons from https://windbornesystems.com, in addition to ongoing weather events such as cyclones, and volcanoes. Clicking on a weather 
+A small application I made in three days, that visualizes weather balloons from https://windbornesystems.com, in addition to ongoing weather events such as cyclones and volcanoes. Clicking on a weather 
 balloon allows the user to observe the forecast at that location, to understand better how the weather balloons are affected by the climate. All of the data comes from a continuously updated data source 
 from the last 24 hours. Mapbox and [deck.gl](deck.gl) are the main libraries/APIs powering the visuals. 
 
@@ -12,6 +12,7 @@ from the last 24 hours. Mapbox and [deck.gl](deck.gl) are the main libraries/API
 
 # Credits
 - Credit to the [Open Meteo API](https://open-meteo.com) for providing a free, quality forecast API
+- Credit to the [NASA EONET API](https://eonet.gsfc.nasa.gov/docs/v2.1) for a comprehensive event tracking API
 - Credit to [Mapbox](https://www.mapbox.com/) for a high-quality basemap
 - Credit to [deck.gl](deck.gl) for a great visualization library
 - Credit to [Wind Born Systems](https://windbornesystems.com) for a extensive, and interesting weather balloon API
