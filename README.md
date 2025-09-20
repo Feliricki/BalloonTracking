@@ -8,6 +8,7 @@ from the last 24 hours. Mapbox and [deck.gl](deck.gl) are the main libraries/API
 - Get balloons data at an hourly interval, which can be changed in real-time with a slider
 - Click on a balloon to get the forecast at that exact location at the precise time specified by the aforementioned "hours_ago" slider
 - Click on a balloon to get the nearest weather event (cyclones and volcanoes)
+- View the path of current cyclones with a line and point visuals (the more recent an event, the larger its point radius) 
 
 # Credits
 - Credit to the [Open Meteo API](https://open-meteo.com) for providing a free, quality forecast API
