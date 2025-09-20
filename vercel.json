@@ -3,6 +3,10 @@
         {
             "source": "/api/windborn/:path*",
             "destination": "https://a.windbornesystems.com/:path*"
+        },
+        {
+            "source": "/:path*",
+            "destination": "/index.html"
         }
     ]
 }
