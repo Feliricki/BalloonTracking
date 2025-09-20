@@ -45,7 +45,7 @@ const LeftControlPanel: React.FC<LeftControlPanelProps> = ({ layerVisibility, on
                 <label className="form-check-label">Volcanoes</label>
             </div>
             <hr />
-            <h5>Filter Ballons By Hour(s) Ago</h5>
+            <h5>Filter Balloons By Hour(s) Ago</h5>
             <label>Hours Ago: {hoursAgo}</label>
             <input
                 type="range"
