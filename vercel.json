@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+        {
+            "source": "/api/windborn/:path*",
+            "destination": "https://a.windbornesystems.com/:path*"
+        }
+    ]
+}

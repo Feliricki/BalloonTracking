@@ -4,7 +4,8 @@ async function get_ballon_location(hours_ago: number){
         throw Error("Invalid argument");
     }
 
-    const baseUrl = import.meta.env.DEV ? "/api/windborn" : "https://a.windbornesystems.com";
+    // const baseUrl = import.meta.env.DEV ? "/api/windborn" : "https://a.windbornesystems.com";
+    const baseUrl = "api/windborn";
     const url = `${baseUrl}/treasure/${hours_ago.toString().padStart(2, '0')}.json`;
     console.log("fetching balloons at URL", url);
 
