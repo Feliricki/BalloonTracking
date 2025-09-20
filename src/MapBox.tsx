@@ -243,7 +243,7 @@ function MapBox() {
             onClick={handleClicks}
         >
             <Map
-                mapboxAccessToken={import.meta.env.VITE_MAPBOX_API_KEY}
+                mapboxAccessToken={import.meta.env.VITE_MAPBOX_API}
                 mapStyle="mapbox://styles/mapbox/dark-v11"
                 projection={'mercator'}
                 attributionControl={true}
