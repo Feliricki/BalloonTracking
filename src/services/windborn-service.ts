@@ -4,7 +4,9 @@ async function get_ballon_location(hours_ago: number){
         throw Error("Invalid argument");
     }
 
-    const url = `/api/windborn/treasure/${hours_ago.toString().padStart(2, '0')}.json`;
+    const baseUrl = import.meta.env.DEV ? "/api/windborn" : "https://sites.google.com/site/windbornetreasures";
+    const url = `${baseUrl}/treasure/${hours_ago.toString().padStart(2, '0')}.json`;
+
     const response = await fetch(url, {
         method: "GET",
     });
