@@ -75,6 +75,11 @@ const LeftControlPanel: React.FC<LeftControlPanelProps> = ({ layerVisibility, on
                 <li>click on a balloon point to get the forecast at that location and time</li>
                 <li>clicking a ballon will indicate the nearest weather event with a marker</li>
             </ul>
+
+            <hr />
+            <a href="https://github.com/Feliricki/BalloonTracking/tree/main" target="_blank" rel="noopener noreferrer">
+                <i className="bi bi-github"></i> View on GitHub
+            </a>
         </div>
     );
 };
