@@ -149,6 +149,7 @@ function MapBox() {
         if (Array.isArray(object)) {
             return `lat: ${object[0]}, lon: ${object[1]} alt: ${object[2]}`;
         }
+
         // hovering over a GeoJSON Point (with weather fields)
         if (object && 'type' in object) {
             const eventDate = new Date(object.date);
@@ -160,7 +161,8 @@ function MapBox() {
 
             html += `
                 Date: ${eventDate.toLocaleDateString()}</br>
-                Event Time: ${eventDate.toLocaleTimeString()}
+                Event Time: ${eventDate.toLocaleTimeString()}</br>
+                Location: Latitude: ${object.coordinates[1]} Longitude: ${object.coordinates[0]}
             `;
 
             return {
