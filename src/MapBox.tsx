@@ -223,7 +223,7 @@ function MapBox() {
         return null;
     }, [currentBalloon, nearestPoint, cyclones, volcanoes]);
 
-    return <div style={{ height: "100vh", width: "100%" }}>
+    return <div style={{ height: "100%", width: "100%" }}>
         <LeftControlPanel
             layerVisibility={layerVisibility}
             onLayerVisibilityChange={handleLayerVisibilityChange}
