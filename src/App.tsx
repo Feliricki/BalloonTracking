@@ -1,6 +1,7 @@
 import { Routes, Route, Outlet, Link } from "react-router-dom";
 import MapBox from "./MapBox";
 import Resume from "./components/Resume";
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
     return (
@@ -32,6 +33,7 @@ function Layout() {
                 </div>
             </nav>
             <hr />
+            <Analytics />
             <Outlet />
         </div>
     );
