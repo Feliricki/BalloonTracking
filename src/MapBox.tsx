@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import get_ballon_location from './services/windborn-service';
 import { get_cyclones, get_volcanoes, type EonetResponse, type WeatherPoint } from './services/eonet-nasa-service';
 import { create_ballon_scatterplot } from './DeckGL/ballon-layers';
-import { create_cyclone_layers, create_volcano_layer } from './DeckGL/weather-events-layers';
+import { create_cyclone_path_layer, create_cyclone_points, create_volcano_layer } from './DeckGL/weather-events-layers';
 import LeftControlPanel from './components/LeftControlPanel';
 import RightForecastPanel from './components/RightForecastPanel';
 import NearestNeighborWorker from './workers/nearest-neighbor.worker?worker';
@@ -39,11 +39,8 @@ function MapBox() {
 
     // deck.gl visual layers
     const [layers, setLayers] = useState<Layer[]>([]);
+    const [layerPathType, setLayerPathType] = useState<"line" | "arc">("arc");
 
-    // nearest weather event (also a cache for each previously calculated result)
-    // ballon -> nearest weather event 
-    // `lat,lon` -> [lng, lat]
-    // const [nearestPoint, setNearestPoint] = useState<{ [point: string]: { lat: number, lon: number } }>({});
     const [nearestPoint, setNearestPoint] = useState<{ lat: number, lon: number } | null>(null);
 
     // webworker setup for calculating nearest point to the currently focused balloon
@@ -130,7 +127,8 @@ function MapBox() {
         }
 
         if (cyclones) {
-            allLayers.push(...create_cyclone_layers(cyclones, layerVisibility.cyclones));
+            allLayers.push(...create_cyclone_points(cyclones, layerVisibility.cyclones));
+            allLayers.push(...create_cyclone_path_layer(cyclones, layerVisibility.cyclones, layerPathType));
         }
 
         if (volcanoes) {
@@ -138,7 +136,7 @@ function MapBox() {
         }
 
         setLayers(allLayers);
-    }, [balloonLocations, cyclones, volcanoes, hoursAgo, layerVisibility]);
+    }, [balloonLocations, cyclones, volcanoes, hoursAgo, layerVisibility, layerPathType]);
 
 
     const getTooltip = (pickingInfo: PickingInfo<number[] | WeatherPoint>) => {
@@ -231,13 +229,16 @@ function MapBox() {
             onLayerVisibilityChange={handleLayerVisibilityChange}
             hoursAgo={hoursAgo}
             onHoursAgoChange={setHoursAgo}
+            pathLayerType={layerPathType}
+            setPathLayerType={setLayerPathType}
         />
         <RightForecastPanel balloon={currentBalloon} onClose={() => setCurrentBallon(null)} hoursAgo={hoursAgo} nearestEvent={getNearestWeatherEvent} />
         <DeckGL
             initialViewState={{
-                longitude: 30,
-                latitude: 15,
-                zoom: 2
+                longitude: -30,
+                latitude: 20,
+                pitch: 30,
+                zoom: 3.5
             }}
             getTooltip={getTooltip}
             controller={true}

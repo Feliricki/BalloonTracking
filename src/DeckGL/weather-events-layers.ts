@@ -1,42 +1,17 @@
-import { create_line_layer, create_scatterplot_layer } from './layer-factory';
+import { create_arc_layer, create_line_layer, create_scatterplot_layer } from './layer-factory';
 import { SEVERE_STORM_COLOR, VOLCANO_COLOR, WILDFIRE_COLOR, generateSlightVariation, hexToRgba } from '../services/color-scheme';
 import type { EonetResponse, WeatherPoint } from '../services/eonet-nasa-service';
-import type { Layer } from 'deck.gl';
+import type { Layer, ScatterplotLayer, LineLayer, ArcLayer } from 'deck.gl';
 
 
 // creates visuals for the cyclone path 
 // overlaid with point (larger -> more recent)
-export function create_cyclone_layers(data: EonetResponse, visible: boolean) {
-
-    const layers: Layer[] = [];
-
-    const min_radius = 5;
-    const max_radius = 70;
+export function create_cyclone_points(data: EonetResponse, visible: boolean) {
+    const layers: ScatterplotLayer<WeatherPoint>[] = [];
+    const min_radius = 1000; // 50km
+    const max_radius = 500_000; // 5,000km 
 
     for (const event of data.events) {
-
-        // process line data
-        const normalizedEven = event.geometry;
-        // if (normalizedEven.length % 2 === 1) {
-        //     normalizedEven.pop();
-        // }
-
-        const lineData: Array<[WeatherPoint, WeatherPoint]> = [];
-        for (let i = 0; i < normalizedEven.length - 2; i++) {
-            lineData.push([normalizedEven[i], normalizedEven[i + 1]]);
-        }
-
-        layers.push(create_line_layer({
-            id: `line_${event.title}`,
-            data: lineData,
-            positionFormat: "XY",
-            widthMinPixels: 2,
-            getSourcePosition: p => p[0].coordinates as [number, number],
-            getTargetPosition: p => p[1].coordinates as [number, number],
-            getColor: generateSlightVariation(SEVERE_STORM_COLOR),
-            visible: visible,
-            pickable: false,
-        }));
 
         const all_dates = event.geometry.map(p => Date.parse(p.date));
         const min_date = Math.min(...all_dates);
@@ -49,15 +24,62 @@ export function create_cyclone_layers(data: EonetResponse, visible: boolean) {
             getPosition: p => p.coordinates as [number, number],
             getFillColor: hexToRgba(SEVERE_STORM_COLOR),
             visible: visible,
-            radiusMinPixels: min_radius,
-            radiusUnits: "pixels",
+            radiusUnits: 'meters',
             getRadius: p => {
                 const normalized = (Date.parse(p.date) - min_date) / (max_date - min_date);
                 return min_radius + normalized * (max_radius - min_radius);
             },
             pickable: visible,
-            opacity: .1
+            radiusMinPixels: 2,
+            radiusMaxPixels: 100,
+            opacity: 0.1
         }));
+
+    }
+
+    return layers;
+}
+
+export function create_cyclone_path_layer(data: EonetResponse, visible: boolean, pathType: "line" | "arc" = "line") {
+    // Either an array of LineLayer, or ArcLayer (Each entry is a WeatherPoint tuple denoting the start and end point)
+    const layers: (LineLayer<[WeatherPoint, WeatherPoint]> | ArcLayer<[WeatherPoint, WeatherPoint]>)[] = [];
+
+    for (const event of data.events) {
+        // process into tuple [start_point, end_point]
+        const normalizedEven = event.geometry;
+
+        const lineData: Array<[WeatherPoint, WeatherPoint]> = [];
+        for (let i = 0; i < normalizedEven.length - 2; i++) {
+            lineData.push([normalizedEven[i], normalizedEven[i + 1]]);
+        }
+
+        if (pathType == "line") {
+            layers.push(create_line_layer({
+                id: `line_${event.title}`,
+                data: lineData,
+                positionFormat: "XY",
+                widthMinPixels: 2,
+                getSourcePosition: p => p[0].coordinates as [number, number],
+                getTargetPosition: p => p[1].coordinates as [number, number],
+                getColor: generateSlightVariation(SEVERE_STORM_COLOR),
+                visible: visible,
+                pickable: false,
+            }));
+        } else {
+            layers.push(create_arc_layer({
+                id: `arc_${event.title}`,
+                data: lineData,
+                positionFormat: "XY",
+                widthMinPixels: 2,
+                getSourcePosition: p => p[0].coordinates as [number, number],
+                getTargetPosition: p => p[1].coordinates as [number, number],
+                getSourceColor: hexToRgba(SEVERE_STORM_COLOR),
+                getTargetColor: generateSlightVariation(SEVERE_STORM_COLOR),
+                visible: visible,
+                pickable: false
+            }));
+        }
+
     }
 
     return layers;

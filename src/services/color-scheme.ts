@@ -20,7 +20,7 @@ export function rgbaToHex(rgba: [number, number, number, number]): string {
 export function generateSlightVariation(hex: string): [number, number, number, number] {
     const [r, g, b, a] = hexToRgba(hex);
 
-    const offset = () => Math.floor(Math.random() * 41) - 20; // -20 to 20
+    const offset = () => Math.floor(Math.random() * 41) - 40; // -20 to 20
 
     const newR = Math.max(0, Math.min(255, r + offset()));
     const newG = Math.max(0, Math.min(255, g + offset()));
