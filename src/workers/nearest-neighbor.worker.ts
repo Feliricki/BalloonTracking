@@ -15,6 +15,8 @@ interface NearestPointResponse {
 function calculateNearestPoint(request: NearestPointRequest) {
 
     const currentBalloon = request.ballon;
+    // TODO: I need to consider the current time-ago of the balloon and weather event
+    // and attempt to match them
     const events = request.events;
 
     let minDistance = Number.MAX_SAFE_INTEGER;
