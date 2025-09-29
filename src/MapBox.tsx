@@ -106,6 +106,18 @@ function MapBox() {
                 const curCyclones = await get_cyclones();
                 const curVolcanoes = await get_volcanoes();
 
+                for (const event of curCyclones.events) {
+                    for (const point of event.geometry) {
+                        point.timestamp = Date.parse(point.date);
+                    }
+                }
+
+                for (const event of curVolcanoes.events) {
+                    for (const point of event.geometry) {
+                        point.timestamp = Date.parse(point.date);
+                    }
+                }
+
                 setCyclones(curCyclones);
                 setVolcanoes(curVolcanoes);
 
@@ -182,10 +194,35 @@ function MapBox() {
             if (!cyclones || !volcanoes) {
                 return;
             }
+
+            // create the Date object corresponding the current balloon
+            const balloonDate = new Date();
+            balloonDate.setHours(balloonDate.getHours() - hoursAgo);
+            const balloonTimestamp = balloonDate.getUTCMilliseconds();
+
             workerRef.current?.postMessage({
                 type: "getNearestPoint",
-                ballon: object,
-                events: [...cyclones.events.flatMap(e => e.geometry), ...volcanoes.events.flatMap(e => e.geometry)]
+                balloon: object,
+                balloonHoursAgo: hoursAgo,
+                events: [
+                    // for each event,
+                    // reduce the point to obtain the nearest 
+                    // weather event in time to the curent balloon's timestamp
+                    ...cyclones.events
+                        .map(event => {
+                            return {
+                                ...event,
+                                geometry: [
+                                    event.geometry.reduce((minPoint, curPoint) =>
+                                        Math.abs(balloonTimestamp - (minPoint.timestamp ?? 0)) < Math.abs(balloonTimestamp - (curPoint.timestamp ?? 0))
+                                            ? curPoint : minPoint // no idea why this works 
+                                    )
+                                ]
+                            };
+                        })
+                        .flatMap(e => e.geometry)
+                    ,
+                    ...volcanoes.events.flatMap(e => e.geometry)]
             } as NearestPointRequest);
         } else {
             setCurrentBallon(null);

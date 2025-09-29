@@ -3,7 +3,8 @@ import type { WeatherPoint } from "../services/eonet-nasa-service";
 
 export interface NearestPointRequest {
     type: "getNearestPoint";
-    ballon: [number, number, number];
+    balloon: [number, number, number];
+    balloonHoursAgo: number;
     events: WeatherPoint[];
 }
 
@@ -12,17 +13,20 @@ interface NearestPointResponse {
     point: { lat: number, lon: number };
 }
 
+function euclideanDistance(balloon: number[], weatherCoordinate: number[]): number {
+    return Math.sqrt((balloon[0] - weatherCoordinate[1]) ** 2 + (balloon[1] - weatherCoordinate[0]) ** 2);
+}
+
 function calculateNearestPoint(request: NearestPointRequest) {
 
-    const currentBalloon = request.ballon;
-    // TODO: I need to consider the current time-ago of the balloon and weather event
-    // and attempt to match them
     const events = request.events;
+    console.log(events);
+    const currentBalloon = request.balloon;
 
     let minDistance = Number.MAX_SAFE_INTEGER;
     let nearestPoint: { lat: number, lon: number } = { lat: 0, lon: 0 };
     for (const event of events) {
-        const distance = Math.sqrt((currentBalloon[0] - event.coordinates[1]) ** 2 + (currentBalloon[1] - event.coordinates[0]) ** 2);
+        const distance = euclideanDistance(currentBalloon, event.coordinates);
         if (distance < minDistance) {
             minDistance = distance;
             nearestPoint = {

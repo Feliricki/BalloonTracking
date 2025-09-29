@@ -1,6 +1,6 @@
 const baseUrl = "https://eonet.gsfc.nasa.gov/api/v3/";
 
-export type WeatherPoint = GeoJSON.Point & { magnitudeValue: number; magnitudeUnit: string; date: string; type: string } ;
+export type WeatherPoint = GeoJSON.Point & { magnitudeValue: number; magnitudeUnit: string; date: string; type: string, timestamp?: number } ;
 
 export interface EonetResponse {
     title: string;
